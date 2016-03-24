@@ -82,8 +82,8 @@
     <orderEntry type="library" exported="" name="osmdroid-android-5.1" level="project" />
     <orderEntry type="library" exported="" name="httpcore-4.4.4" level="project" />
     <orderEntry type="library" exported="" name="httpmime-4.5.2" level="project" />
-    <orderEntry type="library" exported="" name="slf4j-android-1.7.19" level="project" />
     <orderEntry type="library" exported="" name="slf4j-api-1.7.19" level="project" />
+    <orderEntry type="library" exported="" name="slf4j-android-1.7.19" level="project" />
     <orderEntry type="library" exported="" name="usb-android-22" level="project" />
     <orderEntry type="library" exported="" name="effects-android-22" level="project" />
     <orderEntry type="library" exported="" name="maps-android-22" level="project" />
