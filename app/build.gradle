@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
-
 android {
-    compileSdkVersion 22
+    compileSdkVersion 'Google Inc.:Google APIs:22'
     buildToolsVersion "23.0.3"
 
     defaultConfig {
@@ -16,4 +15,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+}
+
+dependencies {
+    compile 'org.apache.httpcomponents:httpmime:4.5.2'
+    compile 'org.apache.httpcomponents:httpcore:4.4.4'
+    compile 'org.apache.httpcomponents:httpmime:4.5.2'
+    compile 'org.slf4j:slf4j-android:1.7.19'
+    compile 'org.osmdroid:osmdroid-android:5.1'
 }
