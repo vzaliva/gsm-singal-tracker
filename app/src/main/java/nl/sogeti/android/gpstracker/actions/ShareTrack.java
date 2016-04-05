@@ -28,42 +28,6 @@
  */
 package nl.sogeti.android.gpstracker.actions;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import nl.sogeti.android.gpstracker.R;
-import nl.sogeti.android.gpstracker.actions.utils.GpxCreator;
-import nl.sogeti.android.gpstracker.actions.utils.KmzCreator;
-import nl.sogeti.android.gpstracker.actions.utils.StatisticsCalulator;
-import nl.sogeti.android.gpstracker.db.GPStracking;
-import nl.sogeti.android.gpstracker.db.GPStracking.Media;
-import nl.sogeti.android.gpstracker.db.GPStracking.MetaData;
-import nl.sogeti.android.gpstracker.db.GPStracking.Tracks;
-import nl.sogeti.android.gpstracker.util.Constants;
-import nl.sogeti.android.gpstracker.util.UnitsI18n;
-import nl.sogeti.android.gpstracker.viewer.LoggerMap;
-
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.auth.AuthenticationException;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -92,6 +56,40 @@ import android.widget.EditText;
 import android.widget.RemoteViews;
 import android.widget.Spinner;
 import android.widget.Toast;
+import cz.msebera.android.httpclient.HttpHost;
+import cz.msebera.android.httpclient.HttpResponse;
+import cz.msebera.android.httpclient.auth.AuthenticationException;
+import cz.msebera.android.httpclient.auth.UsernamePasswordCredentials;
+import cz.msebera.android.httpclient.client.HttpClient;
+import cz.msebera.android.httpclient.client.methods.HttpPost;
+import cz.msebera.android.httpclient.entity.mime.HttpMultipartMode;
+import cz.msebera.android.httpclient.entity.mime.MultipartEntityBuilder;
+import cz.msebera.android.httpclient.entity.mime.content.FileBody;
+import cz.msebera.android.httpclient.entity.mime.content.StringBody;
+import cz.msebera.android.httpclient.impl.auth.BasicScheme;
+import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
+import nl.sogeti.android.gpstracker.R;
+import nl.sogeti.android.gpstracker.actions.utils.GpxCreator;
+import nl.sogeti.android.gpstracker.actions.utils.KmzCreator;
+import nl.sogeti.android.gpstracker.actions.utils.StatisticsCalulator;
+import nl.sogeti.android.gpstracker.db.GPStracking;
+import nl.sogeti.android.gpstracker.db.GPStracking.Media;
+import nl.sogeti.android.gpstracker.db.GPStracking.MetaData;
+import nl.sogeti.android.gpstracker.db.GPStracking.Tracks;
+import nl.sogeti.android.gpstracker.util.Constants;
+import nl.sogeti.android.gpstracker.util.UnitsI18n;
+import nl.sogeti.android.gpstracker.viewer.LoggerMap;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class ShareTrack extends Activity
 {
@@ -429,10 +427,10 @@ public class ShareTrack extends Activity
          jogmap = new URI(getString(R.string.jogmap_post_url));
          HttpPost method = new HttpPost(jogmap);
 
-         MultipartEntity entity = new MultipartEntity();
-         entity.addPart("id", new StringBody(authCode));
-         entity.addPart("mFile", new FileBody(gpxFile));
-         method.setEntity(entity);
+         MultipartEntityBuilder entityBuilder = MultipartEntityBuilder.create();
+         entityBuilder.addPart("id", new StringBody(authCode));
+         entityBuilder.addPart("mFile", new FileBody(gpxFile));
+         method.setEntity(entityBuilder.build());
          response = httpclient.execute(method);
 
          statusCode = response.getStatusLine().getStatusCode();
@@ -515,12 +513,13 @@ public class ShareTrack extends Activity
          method.addHeader(new BasicScheme().authenticate(new UsernamePasswordCredentials(username, password), method));
 
          // Build the multipart body with the upload data
-         MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-         entity.addPart("file",        new FileBody(gpxFile));
-         entity.addPart("description", new StringBody(queryForTrackName()) );
-         entity.addPart("tags",        new StringBody(queryForNotes()));
-         entity.addPart("visibility",  new StringBody(visibility));
-         method.setEntity(entity);
+         MultipartEntityBuilder entityBuilder = MultipartEntityBuilder.create();
+         entityBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+         entityBuilder.addPart("file",        new FileBody(gpxFile));
+         entityBuilder.addPart("description", new StringBody(queryForTrackName()) );
+         entityBuilder.addPart("tags",        new StringBody(queryForNotes()));
+         entityBuilder.addPart("visibility",  new StringBody(visibility));
+         method.setEntity(entityBuilder.build());
          
          // Execute the POST to OpenStreetMap
          response = httpclient.execute(targetHost, method);
@@ -624,7 +623,7 @@ public class ShareTrack extends Activity
       String distString = calculator.getDistanceText();
       String avgSpeed = calculator.getAvgSpeedText();
       String duration = calculator.getDurationText();
-      return String.format(getString(R.string.tweettext, name, distString, avgSpeed, duration));
+      return getString(R.string.tweettext, name, distString, avgSpeed, duration);
    }
 
    private String queryForTrackName()

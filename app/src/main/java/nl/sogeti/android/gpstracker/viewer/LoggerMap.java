@@ -40,6 +40,7 @@ import nl.sogeti.android.gpstracker.db.GPStracking.Segments;
 import nl.sogeti.android.gpstracker.db.GPStracking.Tracks;
 import nl.sogeti.android.gpstracker.db.GPStracking.Waypoints;
 import nl.sogeti.android.gpstracker.logger.ApplicationPreferenceActivity;
+import nl.sogeti.android.gpstracker.logger.GPSLoggerService;
 import nl.sogeti.android.gpstracker.logger.GPSLoggerServiceManager;
 import nl.sogeti.android.gpstracker.util.Constants;
 import nl.sogeti.android.gpstracker.util.UnitsI18n;
@@ -553,7 +554,7 @@ public class LoggerMap extends MapActivity
       mSharedPreferences.unregisterOnSharedPreferenceChangeListener( this.mSharedPreferenceChangeListener );
       if( mLoggerServiceManager.getLoggingState() == Constants.STOPPED )
       {
-         stopService( new Intent( Constants.SERVICENAME ) );
+         stopService( new Intent(this.getApplicationContext(), GPSLoggerService.class) );
       }
    }
 

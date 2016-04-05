@@ -28,29 +28,29 @@
  */
 package nl.sogeti.android.gpstracker.actions;
 
-import java.util.Calendar;
-
-import nl.sogeti.android.gpstracker.R;
-import nl.sogeti.android.gpstracker.db.GPStracking.Tracks;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.Dialog;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.AlertDialog.Builder;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnDismissListener;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import nl.sogeti.android.gpstracker.R;
+import nl.sogeti.android.gpstracker.db.GPStracking.Tracks;
+
+import java.util.Calendar;
 
 /**
  * Empty Activity that pops up the dialog to name the track
@@ -106,28 +106,29 @@ public class NameTrack extends Activity
       NotificationManager noticationManager = (NotificationManager) this.getSystemService( Context.NOTIFICATION_SERVICE );;
       noticationManager.cancel( R.layout.namedialog );
    }
-   
-   private void startDelayNotification()
-   {
+
+   private void startDelayNotification() {
       int resId = R.string.dialog_routename_title;
       int icon = R.drawable.ic_maps_indicator_current_position;
-      CharSequence tickerText = getResources().getString( resId );
+      CharSequence tickerText = getResources().getString(resId);
       long when = System.currentTimeMillis();
-      
-      Notification nameNotification = new Notification( icon, tickerText, when );
-      nameNotification.flags |= Notification.FLAG_AUTO_CANCEL;
-      
-      CharSequence contentTitle = getResources().getString( R.string.app_name );
-      CharSequence contentText = getResources().getString( resId );
-      
-      Intent notificationIntent = new Intent( this, NameTrack.class );
-      notificationIntent.setData( ContentUris.withAppendedId( Tracks.CONTENT_URI, mTrackId ) );
-      
-      PendingIntent contentIntent = PendingIntent.getActivity( this, 0, notificationIntent, Intent.FLAG_ACTIVITY_NEW_TASK );
-      nameNotification.setLatestEventInfo( this, contentTitle, contentText, contentIntent );
-      
-      NotificationManager noticationManager = (NotificationManager) this.getSystemService( Context.NOTIFICATION_SERVICE );
-      noticationManager.notify( R.layout.namedialog, nameNotification );
+
+      CharSequence contentTitle = getResources().getString(R.string.app_name);
+      CharSequence contentText = getResources().getString(resId);
+
+      Intent notificationIntent = new Intent(this, NameTrack.class);
+      notificationIntent.setData(ContentUris.withAppendedId(Tracks.CONTENT_URI, mTrackId));
+      notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+      NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
+      notificationBuilder.setSmallIcon(icon).setTicker(tickerText).setWhen(when);
+      notificationBuilder.setAutoCancel(true);
+      notificationBuilder.setContentTitle(contentTitle).setContentText(contentText);
+      notificationBuilder.setContentIntent(contentIntent);
+
+      NotificationManager noticationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+      noticationManager.notify(R.layout.namedialog, notificationBuilder.build());
    }
    
    @Override

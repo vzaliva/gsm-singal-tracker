@@ -15,6 +15,7 @@ package nl.sogeti.android.gpstracker.widget;
 import nl.sogeti.android.gpstracker.R;
 import nl.sogeti.android.gpstracker.actions.ControlTracking;
 import nl.sogeti.android.gpstracker.actions.InsertNote;
+import nl.sogeti.android.gpstracker.logger.GPSLoggerService;
 import nl.sogeti.android.gpstracker.util.Constants;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -55,7 +56,7 @@ public class ControlWidgetProvider extends AppWidgetProvider
 //      Log.d(TAG, "onEnabled() ");
       super.onEnabled(context);
 
-      context.startService(new Intent(Constants.SERVICENAME));
+      context.startService(new Intent(context, GPSLoggerService.class));
    }
 
    @Override

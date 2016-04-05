@@ -1,16 +1,13 @@
 package nl.sogeti.android.gpstracker.viewer.proxy;
 
-import java.util.List;
-
-import nl.sogeti.android.gpstracker.util.Constants;
-
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-
 import android.util.Log;
 import android.view.View;
-
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
+import nl.sogeti.android.gpstracker.util.Constants;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+
+import java.util.List;
 
 public class MapViewProxy
 {
@@ -38,7 +35,7 @@ public class MapViewProxy
          
          if( mOpenStreetMapView != null )
          {
-            GeoPoint mapCenter = convertOSMGeoPoint( mOpenStreetMapView.getMapCenter() );
+            GeoPoint mapCenter = convertOSMGeoPoint((org.osmdroid.util.GeoPoint) mOpenStreetMapView.getMapCenter());
             int zoomLevel = mOpenStreetMapView.getZoomLevel();
             mMapControllerProxy.setCenter( mapCenter );
             mMapControllerProxy.setZoom( zoomLevel );
@@ -169,7 +166,7 @@ public class MapViewProxy
       }
       if( mOpenStreetMapView != null )
       {
-         return convertOSMGeoPoint( mOpenStreetMapView.getMapCenter() );
+         return convertOSMGeoPoint((org.osmdroid.util.GeoPoint) mOpenStreetMapView.getMapCenter());
       }
       return null;
    }

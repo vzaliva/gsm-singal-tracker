@@ -28,15 +28,13 @@
  */
 package nl.sogeti.android.gpstracker.util;
 
-import java.io.File;
-
-import nl.sogeti.android.gpstracker.actions.utils.XmlCreator;
-import nl.sogeti.android.gpstracker.db.GPStracking;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import nl.sogeti.android.gpstracker.db.GPStracking;
+
+import java.io.File;
 
 
 /**
@@ -61,7 +59,6 @@ public class Constants
    public static final String PRECISION = "precision";
    public static final String LOGATSTARTUP = "logatstartup";
    public static final String STARTUPATBOOT = "startupatboot";
-   public static final String SERVICENAME = "nl.sogeti.android.gpstracker.intent.action.GPSLoggerService";
    public static final String UNITS = "units";
    public static final int UNITS_DEFAULT      = 0;
    public static final int UNITS_IMPERIAL     = 1;
