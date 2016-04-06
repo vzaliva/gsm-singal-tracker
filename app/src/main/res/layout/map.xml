@@ -10,17 +10,17 @@
       android:layout_height="fill_parent"
       android:enabled="true"
       android:clickable="true"
-      android:apiKey="04cwAWM9El_XGECS0_gv3c7xjBCt61IaHx3R5eg" 
+      android:apiKey="0bmdf4-ggC50QWBY1OgGRutQ9bIboIy11OczZbw"
       android:visibility="visible" />
 
    <org.osmdroid.views.MapView
       android:id="@+id/myOsmMapView"
       android:layout_width="fill_parent"
       android:layout_height="fill_parent"
-      renderer="CLOUDMADESTANDARDTILES"
-      cloudmadeStyle="1"
+
       android:visibility="gone"
-   />
+   />     <!-- renderer="CLOUDMADESTANDARDTILES"
+    cloudmadeStyle="1"-->
 
    <TextView
       android:id="@+id/currentSpeed"

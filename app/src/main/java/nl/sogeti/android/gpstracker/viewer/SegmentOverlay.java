@@ -1311,13 +1311,18 @@ public class SegmentOverlay extends Overlay implements OverlayProxy
    org.osmdroid.views.overlay.Overlay osmOverlay = new org.osmdroid.views.overlay.Overlay(mLoggerMap) {
 
       @Override
-      protected void draw( Canvas canvas, org.osmdroid.views.MapView view, boolean shadow)
+      protected void onDraw( Canvas canvas, org.osmdroid.views.MapView view )
       {
-         if (shadow)
-            return;
          mProjection.setProjection(view);
          SegmentOverlay.this.draw( canvas );
       }
+
+      @Override
+      protected void onDrawFinished( Canvas arg0, org.osmdroid.views.MapView arg1 )
+      {
+         // noop
+      }
+
 
       public boolean onSingleTapUp(MotionEvent e, org.osmdroid.views.MapView openStreetMapView)
       {
